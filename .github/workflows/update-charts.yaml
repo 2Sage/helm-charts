@@ -19,9 +19,12 @@ jobs:
           done
           helm repo index . --url https://2Sage.github.io/helm-charts
       - name: Push Changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Автоматически создаётся GitHub
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           git add .
           git commit -m "Auto-update charts"
-          git push
+          git push origin main
